@@ -6,11 +6,14 @@ import requests
 
 username = input("Input your Instagram username : ")
 password = input("Input your Instagram password : ")
+city_name = input("Input your City name : ")
+api_key = input("Input your OpenWeatherMap API key : ")
+bio = input("Input your bio : ")
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
 driver = webdriver.Chrome(options=chrome_options)
-driver.get("https://www.instagram.com/nefiich/")
+driver.get(f"https://www.instagram.com/{username}/")
 time.sleep(10)
 print("I'm about to click the element -> login start!")
 login = driver.find_element_by_xpath('/html/body/div[1]/section/nav/div[2]/div/div/div[3]/div/span/a[1]/button')
@@ -68,7 +71,7 @@ for i in range(100000):
     bio_edit.send_keys(Keys.CONTROL + "a")
     bio_edit.send_keys(Keys.BACKSPACE)
 
-    response = requests.get("https://api.openweathermap.org/data/2.5/weather?id=3187609&appid=372c8b4ceff9f53e67912ed31a3a1bad")
+    response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}")
     data = response.json()
     temp_kelvin = data["main"]["temp"]
     temp = temp_kelvin - 273.15
@@ -82,7 +85,7 @@ for i in range(100000):
 
     # -----------------------------------------------------------------
 
-    text = "curr temp in breza : " + str(round(temp,2)) + "°"
+    text = f"Current temperature in {city_name} : " + str(round(temp,2)) + "°"
 
     driver.execute_script(JS_ADD_TEXT_TO_INPUT, bio_edit, text)
     bio_edit.send_keys(Keys.ENTER)
@@ -90,26 +93,10 @@ for i in range(100000):
     time.sleep(1)
     # -----------------------------------------------------------------
 
-    text = "💼 - Software Developer"
-
-    driver.execute_script(JS_ADD_TEXT_TO_INPUT, bio_edit, text)
+    driver.execute_script(JS_ADD_TEXT_TO_INPUT, bio_edit, bio)
     bio_edit.send_keys(Keys.ENTER)
 
     time.sleep(1)
-    # -----------------------------------------------------------------
-
-    text = "🏐 - #7"
-
-    driver.execute_script(JS_ADD_TEXT_TO_INPUT, bio_edit, text)
-    bio_edit.send_keys(Keys.ENTER)
-
-    # -----------------------------------------------------------------
-
-    #bio_edit.send_keys("temperature in breza : " + str(round(temp,2)) + "°")
-    #bio_edit.send_keys(Keys.ENTER)
-    #bio_edit.send_keys('- Software Developer')
-
-    time.sleep(3)
 
     print("Submiting bio!")
     submit_bio = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/article/form/div[10]/div/div/button')
