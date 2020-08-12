@@ -3,6 +3,10 @@ from selenium.webdriver.common.keys import Keys
 import time
 import requests
 
+
+username = input("Input your Instagram username : ")
+password = input("Input your Instagram password : ")
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
 driver = webdriver.Chrome(options=chrome_options)
@@ -16,13 +20,13 @@ time.sleep(5)
 
 print("I'm about to click the element -> input the username!")
 username_input = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[1]/div/label/input')
-username_input.send_keys('nefiich')
+username_input.send_keys(username)
 
 time.sleep(3)
 
 print("I'm about to click the element -> input the password!")
 password_input = driver.find_element_by_xpath('/html/body/div[1]/section/main/div/article/div/div[1]/div/form/div/div[2]/div/label/input')
-password_input.send_keys('plivapatkaprekosavenosipismonavrhglave41')
+password_input.send_keys(password)
 
 time.sleep(3)
 
